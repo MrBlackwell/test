@@ -53,4 +53,8 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['get_short_link'] = 'welcome/getShortLink';
+$route['get_short_link'] = 'welcome/createShortLink';
+$route['to/(:any)'] = 'welcome/redirectToExternalPage/$1';
+
+//Роут для миграций
+//$route['set_migrations'] = 'migration/index';

@@ -23,24 +23,16 @@ class Welcome extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
-	public function getShortLink(){
-	    $link = $this->input->post('link');
-        $shortLink = $this->sendRequest($link);
-        echo $shortLink;
+	public function createShortLink(){
+	    $this->load->model('redirect_model');
+	    $slug = $this->redirect_model->createLink($this->input->post('link'));
 
+	    echo $this->config->base_url().'to/'.$slug;
     }
 
-    private function sendRequest($link){
-	    //echo "url=".$link;
-        if( $curl = curl_init() ) {
-            curl_setopt($curl, CURLOPT_URL, 'https://clck.ru/--');
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, "url=".$link);
-            $out = curl_exec($curl);
-            curl_close($curl);
-
-            return $out;
-        }
+    public function redirectToExternalPage($slug){
+        $this->load->model('redirect_model');
+        $this->load->helper('url');
+        redirect($this->redirect_model->getLink($slug));
     }
 }
